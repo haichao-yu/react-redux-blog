@@ -59,7 +59,7 @@ const localLogin = new LocalStrategy(localOptions, function(email, password, don
     }
 
     if (!user) {
-      return done(null, false);
+      return done(null, false, { message: 'Incorrect username.' });
     }
 
     // compare passwords - is `password` equal to user.password?
@@ -70,7 +70,7 @@ const localLogin = new LocalStrategy(localOptions, function(email, password, don
       }
 
       if (!isMatch) {
-        return done(null, false);
+        return done(null, false, { message: 'Incorrect password.' });
       }
 
       // find the user, and assign it to req.user, which then be used in signin() in authentication.js

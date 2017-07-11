@@ -16,8 +16,7 @@ export function signinUser({ email, password }, callback) {
 
     // Submit email/password to the server
     axios.post(`${ROOT_URL}/signin`, { email, password })  // axios returns a promise
-      .then(response => {
-        // If request is good...
+      .then(response => {  // If request is good ...
 
         // - Update state to indicate user is authenticated
         dispatch({ type: AUTH_USER });
@@ -28,8 +27,8 @@ export function signinUser({ email, password }, callback) {
         // - redirect to the route '/feature'
         callback('/feature');
       })
-      .catch(() => {
-        // If request is bad...
+      .catch(() => {  // If request is bad ...
+
         // - Show an error to the user
         dispatch(authError('Bad Login Info'))
       });
