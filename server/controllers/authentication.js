@@ -1,4 +1,5 @@
 const jwt = require('jwt-simple');
+const passport = require('passport');
 const User = require('../models/user');
 const config = require('../config');
 
@@ -55,3 +56,24 @@ exports.signin = function(req, res, next) {
   // We just need to give them a token
   res.send({ token: tokenForUser(req.user) });
 };
+
+/*
+// https://github.com/jaredhanson/passport-local/issues/4
+
+exports.signin = function(req, res, next) {
+  passport.authenticate('local', { session: false }, function(err, user, info) {
+
+    // console.log(err);
+    // console.log(user);
+    // console.log(info);  // info contains customized error message
+
+    if (err) {
+      return next(err);
+    }
+    if (!user) {
+      return res.status(401).send(info);
+    }
+    return res.send({ token: tokenForUser(user)});
+  })(req, res, next);
+};
+*/
