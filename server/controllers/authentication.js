@@ -18,7 +18,7 @@ exports.signup = function(req, res, next) {
   const password = req.body.password;
 
   if (!email || !password) {
-    return res.status(422).send({ error: 'You must provide email and password' })
+    return res.status(422).send({ message: 'You must provide email and password.' });  // 422 refers to unprocessable entity
   }
 
   // See if a user with given email exists
@@ -30,7 +30,7 @@ exports.signup = function(req, res, next) {
 
     // If a user with email does exist, return an error
     if (existingUser) {
-      return res.status(422).send({ error: 'This email is in use.' });  // 422 refers to unprocessable entity
+      return res.status(422).send({ message: 'This email is in use.' });  // 422 refers to unprocessable entity
     }
 
     // If a user with email does NOT exist, create and save user record
@@ -45,7 +45,7 @@ exports.signup = function(req, res, next) {
       }
 
       // Respond user request indicating the user was created
-      res.json({ token: tokenForUser(user) });
+      res.json({ message: 'Congratulations! You have successfully signed up. You can sign in now.' });
     });
   });
 };

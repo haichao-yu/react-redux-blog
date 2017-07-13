@@ -2,17 +2,18 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import reduxThunk from 'redux-thunk';
 
 import Header from './components/header';
 import Footer from './components/footer';
+import NoMatch from './components/nomatch';
+import Welcome from './components/welcome';
 import Signin from './components/auth/signin';
-import Signout from './components/auth/signout';
 import Signup from './components/auth/signup';
 import Feature from './components/feature'
 import RequireAuth from './components/auth/require_auth';
-import Welcome from './components/welcome';
+
 import reducers from './reducers';
 import { AUTH_USER } from './actions/types';
 
@@ -30,13 +31,15 @@ ReactDOM.render(
   <Provider store={store}>
     <Router >
       <div>
-        <Header />
-        <Route exact path='/' component={Welcome} />
-        <Route path='/signin' component={Signin} />
-        <Route path='/signout' component={Signout} />
-        <Route path='/signup' component={Signup} />
-        <Route path='/feature' component={RequireAuth(Feature)} />
-        <Footer />
+        <Route component={Header} />
+        <Switch>
+          <Route exact path='/' component={Welcome} />
+          <Route path='/signin' component={Signin} />
+          <Route path='/signup' component={Signup} />
+          <Route path='/feature' component={RequireAuth(Feature)} />
+          <Route component={NoMatch} />
+        </Switch>
+        <Route component={Footer} />
       </div>
     </Router>
   </Provider>

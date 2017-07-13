@@ -5,10 +5,18 @@ import { signupUser } from '../../actions';
 
 class Signup extends Component {
 
+  componentWillMount() {
+    if (this.props.authenticated) {
+      this.props.history.replace('/');
+    }
+  }
+
   handleFormSubmit({ email, password }) {
     // Call action creator to sign up the user
-    this.props.signupUser({ email, password }, (path) => {
-      this.props.history.push(path);
+    this.props.signupUser({ email, password }, (path, state) => {  // callback 1: history push
+      this.props.history.push(path, state);
+    }, (path, state) => {  // callback 2: history replace
+      this.props.history.replace(path, state);
     });
   }
 
@@ -21,10 +29,18 @@ class Signup extends Component {
   );
 
   renderAlert() {
-    if (this.props.errorMessage) {
+
+    const { state } = this.props.history.location;
+    const { action } = this.props.history;
+
+    // message: sign up failed
+    if (state && action === 'REPLACE') {
       return (
-        <div className="alert alert-danger">
-          <strong>Oops!</strong> {this.props.errorMessage}
+        <div className="alert alert-danger alert-dismissible fade show">
+          <button type="button" className="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <strong>Oops!</strong> {state.message}
         </div>
       );
     }
@@ -35,13 +51,15 @@ class Signup extends Component {
     const { handleSubmit } = this.props;
 
     return (
-      <form onSubmit={handleSubmit(this.handleFormSubmit.bind(this))}>
-        <Field name="email" component={this.renderField} type="email" label="Email:"/>
-        <Field name="password" component={this.renderField} type="password" label="Password:"/>
-        <Field name="passwordConfirm" component={this.renderField} type="password" label="Confirm Password:"/>
+      <div>
         {this.renderAlert()}
-        <button type="submit" className="btn btn-primary">Sign Up</button>
-      </form>
+        <form onSubmit={handleSubmit(this.handleFormSubmit.bind(this))}>
+          <Field name="email" component={this.renderField} type="email" label="Email:"/>
+          <Field name="password" component={this.renderField} type="password" label="Password:"/>
+          <Field name="passwordConfirm" component={this.renderField} type="password" label="Confirm Password:"/>
+          <button type="submit" className="btn btn-primary">Sign Up</button>
+        </form>
+      </div>
     );
   }
 }
@@ -71,13 +89,13 @@ function validate(formProps) {
   return errors;
 }
 
-function mapStateToProps(state) {
-  return { errorMessage: state.auth.error };
-}
-
 Signup = reduxForm({
   form: 'signup',
   validate: validate
 })(Signup);
+
+function mapStateToProps(state) {
+  return { authenticated: state.auth.authenticated };
+}
 
 export default connect(mapStateToProps, { signupUser })(Signup);

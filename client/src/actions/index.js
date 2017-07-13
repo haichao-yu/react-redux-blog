@@ -2,13 +2,12 @@ import axios from 'axios';
 import {
   AUTH_USER,
   UNAUTH_USER,
-  AUTH_ERROR,
   FETCH_MESSAGE,
 } from './types';
 
 const ROOT_URL = 'http://localhost:3090';
 
-export function signinUser({ email, password }, callback) {
+export function signinUser({ email, password }, historyPush, historyReplace) {
 
   // Using redux-thunk (instead of returning an object, return a function)
   // All redux-thunk doing is giving us arbitrary access to the dispatch function, and allow us to dispatch our own actions at any time we want
@@ -16,7 +15,7 @@ export function signinUser({ email, password }, callback) {
 
     // Submit email/password to the server
     axios.post(`${ROOT_URL}/signin`, { email, password })  // axios returns a promise
-      .then(response => {  // If request is good ...
+      .then(response => {  // If request is good (sign in succeeded) ...
 
         // - Update state to indicate user is authenticated
         dispatch({ type: AUTH_USER });
@@ -24,37 +23,33 @@ export function signinUser({ email, password }, callback) {
         // - Save the JWT token (using local storage)
         localStorage.setItem('token', response.data.token);
 
-        // - redirect to the route '/feature'
-        callback('/feature');
+        // - Redirect (PUSH) to the route '/feature'
+        historyPush('/feature');
       })
-      .catch(() => {  // If request is bad ...
+      .catch(() => {  // If request is bad (sign in failed) ...
 
-        // - Show an error to the user
-        dispatch(authError('The email and/or password are incorrect.'))
+        // - Redirect (REPLACE) to the route '/signin', then show an error to the user
+        historyReplace('/signin', { message: 'The email and/or password are incorrect.' });
       });
   }
 }
 
-export function signupUser({ email, password }, callback) {
+export function signupUser({ email, password }, historyPush, historyReplace) {
 
-  // Similar to signinUser()
   return function(dispatch) {
 
-    axios.post(`${ROOT_URL}/signup`, { email, password })
-      .then(response => {
-        dispatch({ type: AUTH_USER });
-        localStorage.setItem('token', response.data.token);
-        callback('/feature');
-      })
-      .catch(({response}) => dispatch(authError(response.data.error)));  // https://github.com/mzabriskie/axios/pull/345
-  }
-}
+    axios.post(`${ROOT_URL}/signup`, { email, password })  // axios returns a promise
+      .then(response => {  // If request is good (sign up succeeded) ...
 
-export function authError(error) {
-  return {
-    type: AUTH_ERROR,
-    payload: error,
-  };
+        // - Redirect (PUSH) to the route '/signin', then show a success message to the user
+        historyPush('/signin', { message: response.data.message });
+      })
+      .catch(({response}) => {  // If request is bad (sign up failed) ...
+
+        // - Redirect (REPLACE) to the route '/signup', then show an error to the user
+        historyReplace('/signup', { message: response.data.message });
+      });
+  }
 }
 
 export function signoutUser() {

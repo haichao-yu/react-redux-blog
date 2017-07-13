@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { signoutUser } from '../actions';
 
 class Header extends Component {
 
@@ -9,7 +10,7 @@ class Header extends Component {
       // show a link to sign out
       return (
         <li className="nav-item">
-          <Link className="nav-link" to="/signout">Sign Out</Link>
+          <Link className="nav-link" to="/" onClick={this.props.signoutUser}>Sign Out</Link>
         </li>
       );
     } else {
@@ -49,4 +50,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps)(Header);
+export default connect(mapStateToProps, { signoutUser })(Header);
