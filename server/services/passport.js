@@ -18,14 +18,14 @@ const LocalStrategy = require('passport-local');
 // Setup options for JWT strategy
 const jwtOptions = {
   jwtFromRequest: ExtractJwt.fromHeader('authorization'),
-  secretOrKey: config.secret,
+  secretOrKey: config.secret,  // for decoding JWT
 };
 
 // Create JWT strategy (authenticate user with JWT)
 const jwtLogin = new JwtStrategy(jwtOptions, function(payload, done) {
   // the function will be called whenever we need to authenticate a user with a JWT token
-  // - payload: decoded JWT token
-  // - done: a callback funtion we need to call depending on whether or not we are able to successfully authenticate this user
+  // - payload: decoded JWT token ('sub' and 'iat', refer to jwt.encode in authentication.js)
+  // - done: a callback function we need to call depending on whether or not we are able to successfully authenticate this user
 
   // See if the user ID in the payload exists in our database
   // If it does, call 'done' with that user

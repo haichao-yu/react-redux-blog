@@ -5,7 +5,7 @@ import {
   FETCH_MESSAGE,
 } from './types';
 
-const ROOT_URL = 'http://localhost:3090';
+const ROOT_URL = '/api';
 
 export function signinUser({ email, password }, historyPush, historyReplace) {
 
