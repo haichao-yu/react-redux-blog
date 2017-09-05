@@ -119,3 +119,39 @@ exports.resetPassword = function(req, res, next) {
     });
   });
 };
+
+exports.updateProfile = function(req, res, next) {
+
+  // Require auth
+
+  // Get updated profile info
+  const firstName = req.body.firstName;
+  const lastName = req.body.lastName;
+  const birthday = req.body.birthday;
+  const sex = req.body.sex;
+  const phone = req.body.phone;
+  const address = req.body.address;
+  const occupation = req.body.occupation;
+  const description = req.body.description;
+
+  // Get user
+  const user = req.user;
+
+  // Update profile
+  User.update({ _id: user._id }, { $set: {
+    firstName: firstName,
+    lastName: lastName,
+    birthday: birthday,
+    sex: sex,
+    phone: phone,
+    address: address,
+    occupation: occupation,
+    description: description,
+  } }, function(err) {
+    // callback function
+    if (err) {
+      return next(err);
+    }
+    res.send({ message: 'Congratulations! You have successfully updated your profile.' })
+  });
+};

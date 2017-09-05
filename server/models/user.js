@@ -8,6 +8,13 @@ const userSchema = new Schema({
   password: String,
   firstName: String,
   lastName: String,
+
+  birthday: { type: String, default: '' },
+  sex: { type: String, default: '' },  // secrecy/male/female
+  phone: { type: String, default: '' },
+  address: { type: String, default: '' },
+  occupation: { type: String, default: '' },
+  description: { type: String, default: '' },
 });
 
 // On Save Hook, encrypt the password
