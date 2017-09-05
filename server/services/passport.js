@@ -62,7 +62,7 @@ const localLogin = new LocalStrategy(localOptions, function(email, password, don
       return done(null, false, { message: 'Incorrect username.' });  // that last argument is the info argument to the authenticate callback
     }
 
-    // compare passwords - is `password` equal to user.password?
+    // Compare passwords - is `password` equal to user.password?
     user.comparePassword(password, function(err, isMatch) {
 
       if (err) {
@@ -73,7 +73,7 @@ const localLogin = new LocalStrategy(localOptions, function(email, password, don
         return done(null, false, { message: 'Incorrect password.' });  // that last argument is the info argument to the authenticate callback
       }
 
-      // find the user, and assign it to req.user, which then be used in signin() in authentication.js
+      // Found the user (email and password are correct), then assign it to req.user, which then be used in signin() in authentication.js
       return done(null, user);
     });
   });

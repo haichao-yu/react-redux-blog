@@ -81,3 +81,41 @@ exports.signin = function(req, res, next) {
   })(req, res, next);
 };
 */
+
+exports.resetPassword = function(req, res, next) {
+
+  // Require auth
+
+  const curPassword = req.body.curPassword;
+  const newPassword = req.body.newPassword;
+  const user = req.user;
+
+  // Compare passwords - Does the user provide correct old password?
+  user.comparePassword(curPassword, function(err, isMatch) {
+
+    if (err) {
+      return next(err);
+    }
+
+    if (!isMatch) {
+      return res.status(422).send({ message: 'You current password is incorrect! Please try again.' })
+    }
+
+    if (curPassword === newPassword) {
+      return res.status(422).send({ message: 'Your new password must be different from your current password!' });
+    }
+
+    // Update password
+    user.password = newPassword;
+
+    // Save to DB
+    user.save(function(err) {
+      if (err) {
+        return next(err);
+      }
+
+      // Respond user request indicating that the password was updated successfully
+      res.json({ message: 'Congratulations! You have successfully updated your password.' });
+    });
+  });
+};
