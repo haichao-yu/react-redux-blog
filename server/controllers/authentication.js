@@ -3,10 +3,10 @@ const passport = require('passport');
 const User = require('../models/user');
 const config = require('../config');
 
-// User ID + Secret String = JSON Web Token (JWT)
+// utility function: User ID + Timestamp + Secret String = JSON Web Token (JWT)
 function tokenForUser(user) {
   const timestamp = new Date().getTime();
-  return jwt.encode({ sub: user.id, iat: timestamp }, config.secret);
+  return jwt.encode({ sub: user._id, iat: timestamp }, config.secret);
   // sub: subject (the very specific user)
   // iat: issued at time
 }
@@ -16,6 +16,8 @@ exports.signup = function(req, res, next) {
   // console.log(req.body);
   const email = req.body.email;
   const password = req.body.password;
+  const firstName = req.body.firstName;
+  const lastName = req.body.lastName;
 
   if (!email || !password) {
     return res.status(422).send({ message: 'You must provide email and password.' });  // 422 refers to unprocessable entity
@@ -37,6 +39,8 @@ exports.signup = function(req, res, next) {
     const user = new User({
       email: email,
       password: password,
+      firstName: firstName,
+      lastName: lastName,
     });
 
     user.save(function(err) {  // callback function

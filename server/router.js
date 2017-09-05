@@ -15,5 +15,5 @@ module.exports = function(app) {
   app.post('/api/signup', Authentication.signup);
 
   app.post('/api/signin', requireSignin, Authentication.signin);
-  // app.post('/signin', Authentication.signin);
+  // app.post('/api/signin', Authentication.signin);
 };
