@@ -45,6 +45,10 @@ module.exports = function(app) {
   /**
    * Blog Comment APIs
    */
+
+  app.post('/api/comments/:postId', requireAuth, Blog.createComment);
+
+  app.get('/api/comments/:postId', Blog.fetchCommentsByPostId);
 };
 
 

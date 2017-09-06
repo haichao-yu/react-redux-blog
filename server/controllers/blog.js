@@ -32,7 +32,7 @@ exports.getPosts = function(req, res, next) {
 };
 
 /**
- * Create a post
+ * Create a new post
  *
  * @param req
  * @param res
@@ -96,7 +96,7 @@ exports.getPost = function(req, res, next) {
     if (!post) {
       return res.status(404).json({
         message: 'Error! The post with the given ID is not exist.'
-      })
+      });
     }
     res.json(post);  // return the single blog post
   });
@@ -129,7 +129,7 @@ exports.updatePost = function(req, res, next) {
     if (!post) {
       return res.status(404).json({
         message: 'Error! The post with the given ID is not exist.'
-      })
+      });
     }
 
     // Make sure the user ID is equal to the author ID (Cause only the author can edit the post)
@@ -188,10 +188,19 @@ exports.deletePost = function(req, res, next) {
         message: 'Error! The post with the given ID is not exist.'
       });
     }
+
+    // Delete comments correspond to this post
+    Comment.remove({ postId: post._id }, function(err) {
+      if (err) {
+        return next(err);
+      }
+    });
+
+    // Return a success message
     res.json({
-      message: 'The post was deleted successfully!'
-    })
-  })
+      message: 'The post has been deleted successfully!'
+    });
+  });
 };
 
 /**
@@ -230,3 +239,72 @@ exports.getPostsByAuthorId = function(req, res, next) {
 /**
  * ------- Comment APIs -------
  */
+
+/**
+ * Create a new comment (post ID and user ID are both needed)
+ *
+ * @param req
+ * @param res
+ * @param next
+ */
+exports.createComment = function(req, res, next) {
+
+  // Require auth
+  const user = req.user;
+
+  // Get post ID
+  const postId = req.params.postId;
+
+  // Get content and make sure it is not empty
+  const content = req.body.content;
+  if (!content) {
+    return res.status(422).json({
+      message: 'Error! Comment content cannot be empty.'
+    });
+  }
+
+  // Create a new comment
+  const comment = new Comment({
+    content: content,
+    authorId: user._id,
+    authorName: user.firstName + ' ' + user.lastName,
+    postId: postId,
+    time: Date.now(),
+  });
+
+  // Save the comment
+  comment.save(function(err, comment) {  // callback function
+    if (err) {
+      return next(err);
+    }
+    res.json(comment);  // return the created comment
+  });
+};
+
+/**
+ * Fetch comments for a specific blog post (post ID is needed)
+ *
+ * @param req
+ * @param res
+ * @param next
+ */
+exports.fetchCommentsByPostId = function(req, res, next) {
+  Comment
+    .find({
+      postId: req.params.postId
+    })
+    .select({})
+    .limit(100)
+    .sort({
+      time: -1
+    })
+    .exec(function(err, comments) {
+      if (err) {
+        console.log(err);
+        return res.status(422).json({
+          message: 'Error! Could not retrieve comments.'
+        });
+      }
+      res.json(comments);
+    });
+};
