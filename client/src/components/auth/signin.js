@@ -23,8 +23,8 @@ class Signin extends Component {
 
   renderField = (field) => (
     <fieldset className="form-group">
-      <label>{field.label}</label>
-      <input className="form-control" {...field.input} type={field.type}/>
+      { /*<label>{field.label}</label>*/ }
+      <input className="form-control" placeholder={field.label} {...field.input} type={field.type}/>
     </fieldset>
   );
 
@@ -67,9 +67,11 @@ class Signin extends Component {
     return (
       <div>
         {this.renderAlert()}
-        <form onSubmit={handleSubmit(this.handleFormSubmit.bind(this))}>
-          <Field name="email" component={this.renderField} type="email" label="Email:" />
-          <Field name="password" component={this.renderField} type="password" label="Password:" />
+        <form className="form-signin" onSubmit={handleSubmit(this.handleFormSubmit.bind(this))}>
+          <h3>Sign In</h3>
+          <hr />
+          <Field name="email" component={this.renderField} type="email" label="Email" />
+          <Field name="password" component={this.renderField} type="password" label="Password" />
           <button action="submit" className="btn btn-primary">Sign In</button>
         </form>
       </div>

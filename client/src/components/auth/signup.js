@@ -22,8 +22,8 @@ class Signup extends Component {
 
   renderField = ({ input, label, type, meta: { touched, error, warning } }) => (
     <fieldset className="form-group">
-      <label htmlFor={input.name}>{label}</label>
-      <input className="form-control" {...input} type={type}/>
+      { /*<label>{label}</label>*/ }
+      <input className="form-control" placeholder={label} {...input} type={type}/>
       { touched && error && <span className="text-danger">{error}</span> }
     </fieldset>
   );
@@ -53,10 +53,12 @@ class Signup extends Component {
     return (
       <div>
         {this.renderAlert()}
-        <form onSubmit={handleSubmit(this.handleFormSubmit.bind(this))}>
-          <Field name="email" component={this.renderField} type="email" label="Email:"/>
-          <Field name="password" component={this.renderField} type="password" label="Password:"/>
-          <Field name="passwordConfirm" component={this.renderField} type="password" label="Confirm Password:"/>
+        <form className="form-signin" onSubmit={handleSubmit(this.handleFormSubmit.bind(this))}>
+          <h3>Sign Up</h3>
+          <hr />
+          <Field name="email" component={this.renderField} type="email" label="Email"/>
+          <Field name="password" component={this.renderField} type="password" label="Password"/>
+          <Field name="passwordConfirm" component={this.renderField} type="password" label="Confirm Password"/>
           <button type="submit" className="btn btn-primary">Sign Up</button>
         </form>
       </div>

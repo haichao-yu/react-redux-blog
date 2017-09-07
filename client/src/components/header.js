@@ -7,39 +7,62 @@ class Header extends Component {
 
   renderLinks() {
     if (this.props.authenticated) {
-      // show a link to sign out
+      // show a dropdown menu for authenticated user
       return (
-        <li className="nav-item">
-          <Link className="nav-link" to="/" onClick={this.props.signoutUser}>Sign Out</Link>
-        </li>
+        <div className="navbar-nav nav-item dropdown ml-auto">
+          <a className="nav-link dropdown-toggle" href="http://example.com" id="dropdown02" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Haichao Yu</a>
+          <div className="dropdown-menu" aria-labelledby="dropdown02">
+            <Link className="dropdown-item" to="/profile">Your Profile</Link>
+            <Link className="dropdown-item" to="/my_posts">Your Posts</Link>
+            <div className="dropdown-divider" />
+            <Link className="dropdown-item" to="/change_pwd">Settings</Link>
+            <Link className="dropdown-item" to="/" onClick={this.props.signoutUser}>Sign out</Link>
+          </div>
+        </div>
       );
     } else {
       // show a link to sign in or sign up
-      return [  // react feature: allow us to return an array of components
-        <li className="nav-item" key={1}>
-          <Link className="nav-link" to="/signin">Sign In</Link>
-        </li>,
-        <li className="nav-item" key={2}>
-          <Link className="nav-link" to="/signup">Sign Up</Link>
-        </li>
-      ];
+      return (
+        <ul className="navbar-nav">
+          <li className="nav-item" key={1}>
+            <Link className="btn btn-primary" to="/signup">Sign Up</Link>
+          </li>
+          <li className="nav-item" key={2}>
+            <Link className="btn btn-secondary ml-sm-2" to="/signin">Sign In</Link>
+          </li>
+        </ul>
+      );
     }
   }
 
   render() {
     return (
-      <div className="navbar navbar-toggleable-md navbar-light bg-faded" >
-        <Link to="/" className="navbar-brand">Redux Auth</Link>
+      <nav className="navbar navbar-inverse bg-inverse navbar-toggleable-md fixed-top">
+        <div className="container">
+          <button className="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarsExampleContainer" aria-controls="navbarsExampleContainer" aria-expanded="false" aria-label="Toggle navigation">
+            <span className="navbar-toggler-icon" />
+          </button>
+          <Link className="navbar-brand" to="/">Haichao's Blog System</Link>
 
-        <div className="collapse navbar-collapse" id="navbarSupportedContent">
-          <div className="nav-item mr-auto">
-            <Link to="/" className="nav-link">Home</Link>
+          <div className="collapse navbar-collapse" id="navbarsExampleContainer">
+            <ul className="navbar-nav mr-auto">
+              <li className="nav-item">
+                <Link className="nav-link" to="/posts">Posts</Link>
+              </li>
+              <li className="nav-item">
+                <a className="nav-link" href="https://github.com/haichao-yu/auth">GitHub</a>
+              </li>
+            </ul>
+            <form className="form-inline my-2 my-md-0">
+              <input className="form-control mr-sm-2" type="text" placeholder="Search Post" />
+              <button className="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            </form>
+            <div className="ml-auto">
+              {this.renderLinks()}
+            </div>
           </div>
-          <ul className="nav navbar-nav">
-            {this.renderLinks()}
-          </ul>
         </div>
-      </div>
+      </nav>
     );
   }
 }

@@ -29,17 +29,19 @@ if (token) {
 
 ReactDOM.render(
   <Provider store={store}>
-    <Router >
+    <Router>
       <div>
-        <Route component={Header} />
-        <Switch>
-          <Route exact path='/' component={Welcome} />
-          <Route path='/signin' component={Signin} />
-          <Route path='/signup' component={Signup} />
-          <Route path='/feature' component={RequireAuth(Feature)} />
-          <Route component={NoMatch} />
-        </Switch>
-        <Route component={Footer} />
+        <Header />
+        <div className="container" id="content">
+          <Switch>
+            <Route exact path='/' component={Welcome} />
+            <Route path='/signin' component={Signin} />
+            <Route path='/signup' component={Signup} />
+            <Route path='/feature' component={RequireAuth(Feature)} />
+            <Route component={NoMatch} />
+          </Switch>
+        </div>
+        <Footer />
       </div>
     </Router>
   </Provider>
