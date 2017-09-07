@@ -34,11 +34,11 @@ export function signinUser({ email, password }, historyPush, historyReplace) {
   }
 }
 
-export function signupUser({ email, password }, historyPush, historyReplace) {
+export function signupUser({ email, password, firstName, lastName }, historyPush, historyReplace) {
 
   return function(dispatch) {
 
-    axios.post(`${ROOT_URL}/signup`, { email, password })  // axios returns a promise
+    axios.post(`${ROOT_URL}/signup`, { email, password, firstName, lastName })  // axios returns a promise
       .then(response => {  // If request is good (sign up succeeded) ...
 
         // - Redirect (PUSH) to the route '/signin', then show a success message to the user

@@ -11,9 +11,9 @@ class Signup extends Component {
     }
   }
 
-  handleFormSubmit({ email, password }) {
+  handleFormSubmit({ email, password, firstName, lastName }) {
     // Call action creator to sign up the user
-    this.props.signupUser({ email, password }, (path, state) => {  // callback 1: history push
+    this.props.signupUser({ email, password, firstName, lastName }, (path, state) => {  // callback 1: history push
       this.props.history.push(path, state);
     }, (path, state) => {  // callback 2: history replace
       this.props.history.replace(path, state);
@@ -56,6 +56,8 @@ class Signup extends Component {
         <form className="form-signin" onSubmit={handleSubmit(this.handleFormSubmit.bind(this))}>
           <h3>Sign Up</h3>
           <hr />
+          <Field name="firstName" component={this.renderField} type="text" label="First Name"/>
+          <Field name="lastName" component={this.renderField} type="text" label="Last Name"/>
           <Field name="email" component={this.renderField} type="email" label="Email"/>
           <Field name="password" component={this.renderField} type="password" label="Password"/>
           <Field name="passwordConfirm" component={this.renderField} type="password" label="Confirm Password"/>
