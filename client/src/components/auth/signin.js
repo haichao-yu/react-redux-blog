@@ -6,8 +6,8 @@ import { signinUser } from '../../actions';
 class Signin extends Component {
 
   componentWillMount() {
-    if (this.props.authenticated) {
-      this.props.history.replace('/');
+    if (this.props.authenticated) {  // if the user already signed in, navigate to '/posts'
+      this.props.history.replace('/posts');
     }
   }
 
@@ -24,7 +24,7 @@ class Signin extends Component {
   renderField = (field) => (
     <fieldset className="form-group">
       { /*<label>{field.label}</label>*/ }
-      <input className="form-control" placeholder={field.label} {...field.input} type={field.type}/>
+      <input className="form-control" placeholder={field.label} {...field.input} type={field.type} required='required' />
     </fieldset>
   );
 

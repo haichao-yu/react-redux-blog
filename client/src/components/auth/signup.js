@@ -6,8 +6,8 @@ import { signupUser } from '../../actions';
 class Signup extends Component {
 
   componentWillMount() {
-    if (this.props.authenticated) {
-      this.props.history.replace('/');
+    if (this.props.authenticated) {  // if the user already signed in, navigate to '/posts'
+      this.props.history.replace('/posts');
     }
   }
 
@@ -20,10 +20,10 @@ class Signup extends Component {
     });
   }
 
-  renderField = ({ input, label, type, meta: { touched, error, warning } }) => (
+  renderField = ({ label, input, type, meta: { touched, error, warning } }) => (
     <fieldset className="form-group">
       { /*<label>{label}</label>*/ }
-      <input className="form-control" placeholder={label} {...input} type={type}/>
+      <input className="form-control" placeholder={label} {...input} type={type} required='required' />
       { touched && error && <span className="text-danger">{error}</span> }
     </fieldset>
   );
@@ -72,6 +72,7 @@ function validate(formProps) {
 
   const errors = {};
 
+  /*
   if (!formProps.email) {
     errors.email = 'Please enter an email';
   }
@@ -83,9 +84,10 @@ function validate(formProps) {
   if (!formProps.passwordConfirm) {
     errors.passwordConfirm = 'Please enter an password confirmation';
   }
+  */
 
   if (formProps.password !== formProps.passwordConfirm) {
-    errors.password = 'Password must match';
+    errors.passwordConfirm = 'Password must match!';
   }
 
   return errors;

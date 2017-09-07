@@ -15,7 +15,7 @@ class Header extends Component {
             <Link className="dropdown-item" to="/profile">Your Profile</Link>
             <Link className="dropdown-item" to="/my_posts">Your Posts</Link>
             <div className="dropdown-divider" />
-            <Link className="dropdown-item" to="/change_pwd">Settings</Link>
+            <Link className="dropdown-item" to="/settings">Settings</Link>
             <Link className="dropdown-item" to="/" onClick={this.props.signoutUser}>Sign out</Link>
           </div>
         </div>

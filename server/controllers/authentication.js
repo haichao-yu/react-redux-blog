@@ -20,7 +20,7 @@ exports.signup = function(req, res, next) {
   const lastName = req.body.lastName;
 
   if (!email || !password) {
-    return res.status(422).send({ message: 'You must provide email and password.' });  // 422 refers to unprocessable entity
+    return res.status(422).send({ message: 'You must provide both email and password.' });  // 422 refers to unprocessable entity
   }
 
   // See if a user with given email exists
