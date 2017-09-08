@@ -12,8 +12,8 @@ class Header extends Component {
         <div className="navbar-nav nav-item dropdown ml-auto">
           <a className="nav-link dropdown-toggle" href="http://example.com" id="dropdown02" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{localStorage.getItem('username')}</a>
           <div className="dropdown-menu" aria-labelledby="dropdown02">
-            <Link className="dropdown-item" to="/profile">Your Profile</Link>
             <Link className="dropdown-item" to="/my_posts">Your Posts</Link>
+            <Link className="dropdown-item" to="/profile">Your Profile</Link>
             <div className="dropdown-divider" />
             <Link className="dropdown-item" to="/settings">Settings</Link>
             <Link className="dropdown-item" to="/" onClick={this.props.signoutUser}>Sign out</Link>
