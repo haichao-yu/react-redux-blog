@@ -17,11 +17,12 @@ export function signinUser({ email, password }, historyPush, historyReplace) {
     axios.post(`${ROOT_URL}/signin`, { email, password })  // axios returns a promise
       .then(response => {  // If request is good (sign in succeeded) ...
 
+        // - Save the JWT token and username (using local storage)
+        localStorage.setItem('token', response.data.token);
+        localStorage.setItem('username', response.data.username);
+
         // - Update state to indicate user is authenticated
         dispatch({ type: AUTH_USER });
-
-        // - Save the JWT token (using local storage)
-        localStorage.setItem('token', response.data.token);
 
         // - Redirect (PUSH) to the route '/feature'
         historyPush('/feature');
@@ -54,8 +55,9 @@ export function signupUser({ email, password, firstName, lastName }, historyPush
 
 export function signoutUser() {
 
-  // - Delete the JWT token from local storage
+  // - Delete the JWT token and username from local storage
   localStorage.removeItem('token');
+  localStorage.removeItem('username');
 
   // - Update state to indicate the user is not authenticated
   return { type: UNAUTH_USER }

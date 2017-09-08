@@ -58,7 +58,10 @@ exports.signin = function(req, res, next) {
 
   // User has already had their email and password auth'd (through passport middleware [LocalStrategy])
   // We just need to give them a token
-  res.send({ token: tokenForUser(req.user) });
+  res.send({
+    token: tokenForUser(req.user),
+    username: req.user.firstName + ' ' + req.user.lastName,
+  });
 };
 
 /*
