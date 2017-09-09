@@ -1,7 +1,10 @@
 const Authentication = require('./controllers/authentication');
-const passportService = require('./services/passport');
-const passport = require('passport');
+const Profile = require('./controllers/userinfo');
 const Blog = require('./controllers/blog');
+
+// service
+const passport = require('passport');
+const passportService = require('./services/passport');
 
 // middleware in between Incoming Request and Route Handler
 const requireAuth = passport.authenticate('jwt', { session: false });
@@ -22,9 +25,15 @@ module.exports = function(app) {
   app.post('/api/signin', requireSignin, Authentication.signin);
   // app.post('/api/signin', Authentication.signin);
 
-  app.put('/api/reset_password', requireAuth, Authentication.resetPassword);
+  /**
+   * Profile APIs
+   */
 
-  app.put('/api/update_profile', requireAuth, Authentication.updateProfile);
+  app.get('/api/profile', requireAuth, Profile.fetchProfile);
+
+  app.put('/api/profile', requireAuth, Profile.updateProfile);
+
+  app.put('/api/password', requireAuth, Profile.resetPassword);
 
   /**
    * Blog Post APIs

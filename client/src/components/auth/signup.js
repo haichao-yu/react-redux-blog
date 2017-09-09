@@ -36,11 +36,8 @@ class Signup extends Component {
     // message: sign up failed
     if (state && action === 'REPLACE') {
       return (
-        <div className="alert alert-danger alert-dismissible fade show">
-          <button type="button" className="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-          <strong>Oops!</strong> {state.message}
+        <div className="alert alert-danger">
+          {`[${new Date().toLocaleString()}] --- `} <strong>Oops!</strong> {state.message}
         </div>
       );
     }

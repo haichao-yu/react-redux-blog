@@ -36,11 +36,8 @@ class Signin extends Component {
     // message: successfully signed up, you can sign in
     if (state && action === 'PUSH') {
       return (
-        <div className="alert alert-success alert-dismissible fade show" role="alert">
-          <button type="button" className="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-          {state.message}
+        <div className="alert alert-success" role="alert">
+          {`[${new Date().toLocaleString()}] --- `} <strong>Congratulations!</strong> {state.message}
         </div>
       );
     }
@@ -48,11 +45,8 @@ class Signin extends Component {
     // message: sign in failed
     if (state && action === 'REPLACE') {
       return (
-        <div className="alert alert-danger alert-dismissible fade show" role="alert">
-          <button type="button" className="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-          <strong>Oops!</strong> {state.message}
+        <div className="alert alert-danger" role="alert">
+          {`[${new Date().toLocaleString()}] --- `} <strong>Oops!</strong> {state.message}
         </div>
       );
     }

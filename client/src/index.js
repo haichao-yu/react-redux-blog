@@ -11,6 +11,7 @@ import NoMatch from './components/nomatch';
 import Welcome from './components/welcome';
 import Signin from './components/auth/signin';
 import Signup from './components/auth/signup';
+import Profile from './components/userinfo/profile';
 import Feature from './components/feature'
 import RequireAuth from './components/auth/require_auth';
 
@@ -37,6 +38,7 @@ ReactDOM.render(
             <Route exact path='/' component={Welcome} />
             <Route path='/signin' component={Signin} />
             <Route path='/signup' component={Signup} />
+            <Route path="/profile" component={RequireAuth(Profile)} />
             <Route path='/feature' component={RequireAuth(Feature)} />
             <Route component={NoMatch} />
           </Switch>

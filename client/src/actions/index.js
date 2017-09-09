@@ -3,9 +3,17 @@ import {
   AUTH_USER,
   UNAUTH_USER,
   FETCH_MESSAGE,
+
+  FETCH_PROFILE,
+  CLEAR_PROFILE,
+  UPDATE_PROFILE,
 } from './types';
 
 const ROOT_URL = '/api';
+
+/**
+ * Authentication
+ */
 
 export function signinUser({ email, password }, historyPush, historyReplace) {
 
@@ -60,7 +68,7 @@ export function signoutUser() {
   localStorage.removeItem('username');
 
   // - Update state to indicate the user is not authenticated
-  return { type: UNAUTH_USER }
+  return { type: UNAUTH_USER };
 }
 
 export function fetchMessage() {
@@ -76,3 +84,59 @@ export function fetchMessage() {
     });
   }
 }
+
+/**
+ * Profile
+ */
+
+export function fetchProfile() {
+
+  return function(dispatch) {
+    axios.get(`${ROOT_URL}/profile`, {
+      headers: { authorization: localStorage.getItem('token') }
+    }).then(response => {
+      dispatch({
+        type: FETCH_PROFILE,
+        payload: response.data.user,
+      });
+    });
+  }
+}
+
+export function clearProfile() {
+  return { type: CLEAR_PROFILE };
+}
+
+export function updateProfile({ firstName, lastName, birthday, sex, phone, address, occupation, description }, historyReplace) {
+
+  return function(dispatch) {
+    axios.put(`${ROOT_URL}/profile`, {  // req.body (2nd parameter)
+        firstName,
+        lastName,
+        birthday,
+        sex,
+        phone,
+        address,
+        occupation,
+        description,
+      }, {  // header (3rd parameter)
+        headers: {authorization: localStorage.getItem('token')},  // require auth
+      }
+    )
+      .then((response) => {  // update profile success
+        // console.log(response);
+        dispatch({
+          type: UPDATE_PROFILE,
+          payload: response.data.user,
+        });
+        historyReplace('/profile', { status: 'success', message: 'You have successfully updated your profile.' });
+      })
+      .catch(() => { // update profile failed
+        historyReplace('/profile', { status: 'fail', message: 'Update profile failed. Please try again.' });
+      });
+  }
+}
+
+/**
+ * Blog
+ */
