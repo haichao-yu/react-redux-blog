@@ -37,7 +37,7 @@ class Signup extends Component {
     if (state && action === 'REPLACE') {
       return (
         <div className="alert alert-danger">
-          {`[${new Date().toLocaleString()}] --- `} <strong>Oops!</strong> {state.message}
+          {`[${state.time}] --- `} <strong>Oops!</strong> {state.message}
         </div>
       );
     }

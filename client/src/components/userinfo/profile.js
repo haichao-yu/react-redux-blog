@@ -61,7 +61,7 @@ class Profile extends Component {
 
       return (
         <div className={`alert ${state.status === 'success' ? 'alert-success' : 'alert-danger'}`} role="alert">
-          {`[${new Date().toLocaleString()}] --- `} <strong>{state.status === 'success' ? 'Congratulations!' : 'Oops!'}</strong> {state.message}
+          {`[${state.time}] --- `} <strong>{state.status === 'success' ? 'Congratulations!' : 'Oops!'}</strong> {state.message}
         </div>
       );
     }

@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { reset } from 'redux-form';
 import {
   AUTH_USER,
   UNAUTH_USER,
@@ -40,7 +41,10 @@ export function signinUser({ email, password }, historyPush, historyReplace) {
       .catch(() => {  // If request is bad (sign in failed) ...
 
         // - Redirect (REPLACE) to the route '/signin', then show an error to the user
-        historyReplace('/signin', { message: 'The email and/or password are incorrect.' });
+        historyReplace('/signin', {
+          time: new Date().toLocaleString(),
+          message: 'The email and/or password are incorrect.'
+        });
       });
   }
 }
@@ -53,12 +57,12 @@ export function signupUser({ email, password, firstName, lastName }, historyPush
       .then(response => {  // If request is good (sign up succeeded) ...
 
         // - Redirect (PUSH) to the route '/signin', then show a success message to the user
-        historyPush('/signin', { message: response.data.message });
+        historyPush('/signin', { time: new Date().toLocaleString(), message: response.data.message });
       })
       .catch(({response}) => {  // If request is bad (sign up failed) ...
 
         // - Redirect (REPLACE) to the route '/signup', then show an error to the user
-        historyReplace('/signup', { message: response.data.message });
+        historyReplace('/signup', { time: new Date().toLocaleString(), message: response.data.message });
       });
   }
 }
@@ -150,10 +154,45 @@ export function updateProfile({ firstName, lastName, birthday, sex, phone, addre
           payload: response.data.user.firstName + ' ' + response.data.user.lastName,
         });
         // history.replace
-        historyReplace('/profile', { status: 'success', message: 'You have successfully updated your profile.' });
+        historyReplace('/profile', {
+          status: 'success',
+          time: new Date().toLocaleString(),
+          message: 'You have successfully updated your profile.',
+        });
       })
       .catch(() => { // update profile failed
-        historyReplace('/profile', { status: 'fail', message: 'Update profile failed. Please try again.' });
+        historyReplace('/profile', {
+          status: 'fail',
+          time: new Date().toLocaleString(),
+          message: 'Update profile failed. Please try again.',
+        });
+      });
+  }
+}
+
+export function changePassword({ oldPassword, newPassword }, historyReplace) {
+
+  return function(dispatch) {
+    axios.put(`${ROOT_URL}/password`, {
+      oldPassword,
+      newPassword,
+    }, {
+      headers: {authorization: localStorage.getItem('token')},  // require auth
+    })
+      .then((response) => {
+        dispatch(reset('settings'));  // clear the form if success
+        historyReplace('/settings', {
+          status: 'success',
+          time: new Date().toLocaleString(),
+          message: response.data.message,
+        });
+      })
+      .catch(({response}) => {
+        historyReplace('/settings', {
+          status: 'fail',
+          time: new Date().toLocaleString(),
+          message: response.data.message,
+        });
       });
   }
 }

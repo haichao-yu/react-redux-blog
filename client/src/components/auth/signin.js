@@ -37,7 +37,7 @@ class Signin extends Component {
     if (state && action === 'PUSH') {
       return (
         <div className="alert alert-success" role="alert">
-          {`[${new Date().toLocaleString()}] --- `} <strong>Congratulations!</strong> {state.message}
+          {`[${state.time}] --- `} <strong>Congratulations!</strong> {state.message}
         </div>
       );
     }
@@ -46,7 +46,7 @@ class Signin extends Component {
     if (state && action === 'REPLACE') {
       return (
         <div className="alert alert-danger" role="alert">
-          {`[${new Date().toLocaleString()}] --- `} <strong>Oops!</strong> {state.message}
+          {`[${state.time}] --- `} <strong>Oops!</strong> {state.message}
         </div>
       );
     }

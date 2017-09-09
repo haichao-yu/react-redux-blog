@@ -87,23 +87,23 @@ exports.resetPassword = function(req, res, next) {
 
   // Require auth
 
-  const curPassword = req.body.curPassword;
+  const oldPassword = req.body.oldPassword;
   const newPassword = req.body.newPassword;
   const user = req.user;
 
   // Compare passwords - Does the user provide correct old password?
-  user.comparePassword(curPassword, function(err, isMatch) {
+  user.comparePassword(oldPassword, function(err, isMatch) {
 
     if (err) {
       return next(err);
     }
 
     if (!isMatch) {
-      return res.status(422).send({ message: 'You current password is incorrect! Please try again.' })
+      return res.status(422).send({ message: 'You old password is incorrect! Please try again.' })
     }
 
-    if (curPassword === newPassword) {
-      return res.status(422).send({ message: 'Your new password must be different from your current password!' });
+    if (oldPassword === newPassword) {
+      return res.status(422).send({ message: 'Your new password must be different from your old password!' });
     }
 
     // Update password
