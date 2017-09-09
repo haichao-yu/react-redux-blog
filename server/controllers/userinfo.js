@@ -53,7 +53,7 @@ exports.updateProfile = function(req, res, next) {
   const user = req.user;
 
   // Update user profile
-  User.update({ _id: user._id }, { $set: {
+  User.findByIdAndUpdate(user._id, { $set: {
     firstName: firstName,
     lastName: lastName,
     birthday: birthday,
@@ -62,30 +62,18 @@ exports.updateProfile = function(req, res, next) {
     address: address,
     occupation: occupation,
     description: description,
-  } }, function(err) {
-    // callback function
+  } }, { new: true }, function(err, updatedUser) {
     if (err) {
       return next(err);
     }
-    // res.send({ message: 'You have successfully updated your profile.' });
-  });
-
-  // Return updated profile
-  User
-    .findById(user._id)
-    .select({
-      _id: 0,
-      password: 0,
-      __v: 0,
-    })
-    .exec(function(err, user) {
-      if (err) {
-        return next(err);
-      }
-      res.send({
-        user: user
-      });
-    });
+    // Delete unused properties: _id, password, __v
+    updatedUser = updatedUser.toObject();
+    delete updatedUser['_id'];
+    delete updatedUser['password'];
+    delete updatedUser['__v'];
+    // Return updated user profile
+    res.send({ user: updatedUser });
+  })
 };
 
 /**
