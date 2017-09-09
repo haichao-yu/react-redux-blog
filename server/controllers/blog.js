@@ -12,7 +12,7 @@ const Comment = require('../models/comment');
  * @param res
  * @param next
  */
-exports.getPosts = function(req, res, next) {
+exports.fetchPosts = function(req, res, next) {
   Post
     .find({})
     .select({})
@@ -83,7 +83,7 @@ exports.createPost = function(req, res, next) {
  * @param res
  * @param next
  */
-exports.getPost = function(req, res, next) {
+exports.fetchPost = function(req, res, next) {
   Post.findById({
     _id: req.params.id
   }, function(err, post) {
@@ -210,7 +210,7 @@ exports.deletePost = function(req, res, next) {
  * @param res
  * @param next
  */
-exports.getPostsByAuthorId = function(req, res, next) {
+exports.fetchPostsByAuthorId = function(req, res, next) {
 
   // Require auth
   const user = req.user;

@@ -41,17 +41,17 @@ module.exports = function(app) {
    * Blog Post APIs
    */
 
-  app.get('/api/posts', Blog.getPosts);
+  app.get('/api/posts', Blog.fetchPosts());
 
   app.post('/api/posts', requireAuth, Blog.createPost);
 
-  app.get('/api/posts/:id', Blog.getPost);
+  app.get('/api/posts/:id', Blog.fetchPost());
 
   app.put('/api/posts/:id', requireAuth, Blog.updatePost);
 
   app.delete('/api/posts/:id', requireAuth, Blog.deletePost);
 
-  app.get('/api/my_posts', requireAuth, Blog.getPostsByAuthorId);
+  app.get('/api/my_posts', requireAuth, Blog.fetchPostsByAuthorId());
 
   /**
    * Blog Comment APIs
