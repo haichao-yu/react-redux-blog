@@ -70,6 +70,8 @@ exports.signup = function(req, res, next) {
  */
 exports.signin = function(req, res, next) {
 
+  // Require auth
+
   // User has already had their email and password auth'd (through passport middleware [LocalStrategy])
   // We just need to give them a token
   res.send({
@@ -98,3 +100,12 @@ exports.signin = function(req, res, next) {
   })(req, res, next);
 };
 */
+
+exports.verifyJwt = function(req, res, next) {
+
+  // Require auth
+
+  res.send({
+    username: req.user.firstName + ' ' + req.user.lastName
+  });
+};

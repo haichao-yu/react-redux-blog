@@ -1,16 +1,22 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { signoutUser } from '../actions';
+import { verifyJwt, signoutUser } from '../actions';
 
 class Header extends Component {
+
+  componentWillMount() {
+    if (!this.props.username) {
+      this.props.verifyJwt();
+    }
+  }
 
   renderLinks() {
     if (this.props.authenticated) {
       // show a dropdown menu for authenticated user
       return (
         <div className="navbar-nav nav-item dropdown ml-auto">
-          <a className="nav-link dropdown-toggle" href="http://example.com" id="dropdown02" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{localStorage.getItem('username')}</a>
+          <a className="nav-link dropdown-toggle" href="http://example.com" id="dropdown02" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{this.props.username}</a>
           <div className="dropdown-menu" aria-labelledby="dropdown02">
             <Link className="dropdown-item" to="/my_posts">Your Posts</Link>
             <Link className="dropdown-item" to="/profile">Your Profile</Link>
@@ -69,8 +75,9 @@ class Header extends Component {
 
 function mapStateToProps(state) {
   return {
-    authenticated: state.auth.authenticated
+    authenticated: state.auth.authenticated,
+    username: state.auth.username,
   };
 }
 
-export default connect(mapStateToProps, { signoutUser })(Header);
+export default connect(mapStateToProps, { verifyJwt, signoutUser })(Header);

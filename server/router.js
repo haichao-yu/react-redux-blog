@@ -25,6 +25,8 @@ module.exports = function(app) {
   app.post('/api/signin', requireSignin, Authentication.signin);
   // app.post('/api/signin', Authentication.signin);
 
+  app.get('/api/verify_jwt', requireAuth, Authentication.verifyJwt);
+
   /**
    * Profile APIs
    */

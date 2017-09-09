@@ -25,12 +25,14 @@ export function signinUser({ email, password }, historyPush, historyReplace) {
     axios.post(`${ROOT_URL}/signin`, { email, password })  // axios returns a promise
       .then(response => {  // If request is good (sign in succeeded) ...
 
-        // - Save the JWT token and username (using local storage)
+        // - Save the JWT token (use local storage)
         localStorage.setItem('token', response.data.token);
-        localStorage.setItem('username', response.data.username);
 
         // - Update state to indicate user is authenticated
-        dispatch({ type: AUTH_USER });
+        dispatch({
+          type: AUTH_USER,
+          payload: response.data.username,
+        });
 
         // - Redirect (PUSH) to the route '/feature'
         historyPush('/feature');
@@ -63,12 +65,25 @@ export function signupUser({ email, password, firstName, lastName }, historyPush
 
 export function signoutUser() {
 
-  // - Delete the JWT token and username from local storage
+  // - Delete the JWT token from local storage
   localStorage.removeItem('token');
-  localStorage.removeItem('username');
 
   // - Update state to indicate the user is not authenticated
   return { type: UNAUTH_USER };
+}
+
+export function verifyJwt() {
+
+  return function(dispatch) {
+    axios.get(`${ROOT_URL}/verify_jwt`, {
+      headers: { authorization: localStorage.getItem('token') }
+    }).then((response) => {
+      dispatch({
+        type: AUTH_USER,
+        payload: response.data.username,
+      });
+    });
+  }
 }
 
 export function fetchMessage() {
@@ -86,7 +101,7 @@ export function fetchMessage() {
 }
 
 /**
- * Profile
+ * User information
  */
 
 export function fetchProfile() {
@@ -124,11 +139,17 @@ export function updateProfile({ firstName, lastName, birthday, sex, phone, addre
       }
     )
       .then((response) => {  // update profile success
-        // console.log(response);
+        // - update profile
         dispatch({
           type: UPDATE_PROFILE,
           payload: response.data.user,
         });
+        // - update username for header
+        dispatch({
+          type: AUTH_USER,
+          payload: response.data.user.firstName + ' ' + response.data.user.lastName,
+        });
+        // history.replace
         historyReplace('/profile', { status: 'success', message: 'You have successfully updated your profile.' });
       })
       .catch(() => { // update profile failed
