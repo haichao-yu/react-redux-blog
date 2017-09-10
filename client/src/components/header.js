@@ -6,7 +6,7 @@ import { verifyJwt, signoutUser } from '../actions';
 class Header extends Component {
 
   componentWillMount() {
-    if (this.props.authenticated) {
+    if (this.props.authenticated && !this.props.user) {
       this.props.verifyJwt();  // fetch username
     }
   }

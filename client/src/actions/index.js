@@ -8,6 +8,8 @@ import {
   FETCH_PROFILE,
   CLEAR_PROFILE,
   UPDATE_PROFILE,
+
+  FETCH_POSTS,
 } from './types';
 
 const ROOT_URL = '/api';
@@ -200,3 +202,15 @@ export function changePassword({ oldPassword, newPassword }, historyReplace) {
 /**
  * Blog
  */
+
+export function fetchPosts() {
+
+  return function(dispatch) {
+    axios.get(`${ROOT_URL}/posts`).then((response) => {
+      dispatch({
+        type: FETCH_POSTS,
+        payload: response.data,
+      });
+    });
+  }
+}
