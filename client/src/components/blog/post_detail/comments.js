@@ -14,9 +14,9 @@ class Comments extends Component {
       <div key={comment._id}>
         <div className="text-justify" dangerouslySetInnerHTML={{ __html: comment.content }} />
         <div>
-          <span className="span-with-margin">{comment.authorName}</span>
-          <span className="span-with-margin"> • </span>
-          <span className="span-with-margin">{new Date(comment.time).toLocaleString()}</span>
+          <span className="span-with-margin f6 text-grey">{comment.authorName}</span>
+          <span className="span-with-margin f6 text-grey"> • </span>
+          <span className="span-with-margin f6 text-grey">{new Date(comment.time).toLocaleString()}</span>
         </div>
         <hr />
       </div>

@@ -57,3 +57,11 @@ body {
   padding: 19px 29px 29px;
   margin: 0 auto 20px;
 }
+
+.f6 {
+  font-size: 12px !important;
+}
+
+.text-grey {
+  color: #9199a1 !important;
+}

@@ -25,10 +25,10 @@ class PostList extends Component {
           </Link>
         </h3>
         {this.renderTags(post.categories)}
-        <span className="span-with-margin"> • </span>
-        <span className="span-with-margin">{post.authorName}</span>
-        <span className="span-with-margin"> • </span>
-        <span className="span-with-margin">{new Date(post.time).toLocaleString()}</span>
+        <span className="span-with-margin text-grey"> • </span>
+        <span className="span-with-margin text-grey">{post.authorName}</span>
+        <span className="span-with-margin text-grey"> • </span>
+        <span className="span-with-margin text-grey">{new Date(post.time).toLocaleString()}</span>
         <hr />
       </div>
     );
