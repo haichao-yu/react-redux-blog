@@ -12,6 +12,9 @@ import {
   FETCH_POSTS,
   CREATE_POST,
   FETCH_POST,
+
+  CREATE_COMMENT,
+  FETCH_COMMENTS,
 } from './types';
 
 const ROOT_URL = '/api';
@@ -202,7 +205,7 @@ export function changePassword({ oldPassword, newPassword }, historyReplace) {
 }
 
 /**
- * Blog
+ * Blog Post
  */
 
 export function fetchPosts() {
@@ -249,6 +252,43 @@ export function fetchPost(id) {
       // console.log(response);
       dispatch({
         type: FETCH_POST,
+        payload: response.data,
+      });
+    });
+  }
+}
+
+/**
+ * Blog Comments
+ */
+
+export function createComment({ comment, postId }, historyReplace) {
+
+  return function(dispatch) {
+    axios.post(`${ROOT_URL}/comments/${postId}`, { content: comment }, {
+      headers: {authorization: localStorage.getItem('token')},  // require auth
+    })
+      .then((response) => {  // if success, clear the text editor
+        dispatch({
+          type: CREATE_COMMENT,
+          payload: response.data,
+        });
+        dispatch(reset('settings'));  // clear the form if success
+      })
+      .catch(({response}) => {  // if fail, render alert message
+        historyReplace(`/posts/${postId}`, {
+          time: new Date().toLocaleString(),
+          message: response.data.message,
+        });
+      });
+  }
+}
+
+export function fetchComments(postId) {
+  return function(dispatch) {
+    axios.get(`${ROOT_URL}/comments/${postId}`).then((response) => {
+      dispatch({
+        type: FETCH_COMMENTS,
         payload: response.data,
       });
     });

@@ -11,3 +11,6 @@ export const CREATE_POST = 'create_post';
 export const FETCH_POST = 'fetch_post';
 export const UPDATE_POST = 'update_post';
 export const DELETE_POST = 'delete_post';
+
+export const CREATE_COMMENT = 'create_comment';
+export const FETCH_COMMENTS = 'fetch_comments';
