@@ -298,7 +298,7 @@ exports.fetchCommentsByPostId = function(req, res, next) {
     .select({})
     .limit(100)
     .sort({
-      time: -1
+      time: 1
     })
     .exec(function(err, comments) {
       if (err) {
