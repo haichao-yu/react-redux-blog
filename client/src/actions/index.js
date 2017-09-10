@@ -11,6 +11,7 @@ import {
 
   FETCH_POSTS,
   CREATE_POST,
+  FETCH_POST,
 } from './types';
 
 const ROOT_URL = '/api';
@@ -239,5 +240,17 @@ export function createPost({ title, categories, content }, historyPush, historyR
           message: response.data.message,
         });
       });
+  }
+}
+
+export function fetchPost(id) {
+  return function(dispatch) {
+    axios.get(`${ROOT_URL}/posts/${id}`).then(response => {
+      // console.log(response);
+      dispatch({
+        type: FETCH_POST,
+        payload: response.data,
+      });
+    });
   }
 }

@@ -51,3 +51,9 @@ body {
 .link-without-underline {
   text-decoration: none !important;
 }
+
+.post-detail {
+  max-width: 800px;
+  padding: 19px 29px 29px;
+  margin: 0 auto 20px;
+}

@@ -14,7 +14,7 @@ export default function(state = {}, action) {
     case CREATE_POST:
       return { ...state, [action.payload._id]: action.payload };  // [] here is not for creating array, is for key interpolation, i.e. newState[action.payload.id] = action.payload
     case FETCH_POST:
-      return state;
+      return { ...state, [action.payload._id]: action.payload };
     case UPDATE_POST:
       return state;
     case DELETE_POST:
