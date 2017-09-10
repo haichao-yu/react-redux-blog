@@ -1,15 +1,6 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { fetchPost } from '../../../actions';
 
 class PostBody extends Component {
-
-  componentDidMount() {
-    if (!this.props.post) {
-      const {id} = this.props;
-      this.props.fetchPost(id);
-    }
-  }
 
   renderTags(tags) {
     return tags.map(tag => {
@@ -20,10 +11,6 @@ class PostBody extends Component {
   render() {
 
     const {post} = this.props;
-
-    if (!post) {
-      return <div>Loading...</div>
-    }
 
     // for displaying inner html: https://facebook.github.io/react/docs/dom-elements.html
     return (
@@ -42,8 +29,4 @@ class PostBody extends Component {
   }
 }
 
-function mapStateToProps({ posts }, ownProps) {
-  return { post: posts[ownProps.id] };
-}
-
-export default connect(mapStateToProps, { fetchPost })(PostBody);
+export default PostBody;
