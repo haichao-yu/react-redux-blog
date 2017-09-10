@@ -12,7 +12,12 @@ class PostDetail extends Component {
       <div  className="post-detail">
         <PostBody id={this.props.match.params.id} />
         <Comments postId={this.props.match.params.id} />
-        <CommentNew postId={this.props.match.params.id} history={this.props.history} />
+        <CommentNew
+          postId={this.props.match.params.id}
+          history={this.props.history}
+          state={this.props.history.location.state}
+          action={this.props.history.action}
+        />
       </div>
     );
   }

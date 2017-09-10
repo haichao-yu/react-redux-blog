@@ -55,7 +55,7 @@ exports.createPost = function(req, res, next) {
   // Make sure title, categories and content are not empty
   if (!title || !categories || !content) {
     return res.status(422).json({
-      message: 'Error! Title, categories and content are all required.'
+      message: 'Title, categories and content are all required.'
     });
   }
 
@@ -150,7 +150,7 @@ exports.updatePost = function(req, res, next) {
 
     if (!title || !categories || !content) {
       return res.status(422).json({
-        message: 'Error! Title, categories and content are all required.'
+        message: 'Title, categories and content are all required.'
       });
     }
 
@@ -254,6 +254,12 @@ exports.createComment = function(req, res, next) {
   // Require auth
   const user = req.user;
 
+  if (!user) {
+    return res.status(422).json({
+      message: 'You must sign in before you can post new comment.'
+    });
+  }
+
   // Get post ID
   const postId = req.params.postId;
 
@@ -261,7 +267,7 @@ exports.createComment = function(req, res, next) {
   const content = req.body.content;
   if (!content) {
     return res.status(422).json({
-      message: 'Error! Comment content cannot be empty.'
+      message: 'Comment cannot be empty.'
     });
   }
 

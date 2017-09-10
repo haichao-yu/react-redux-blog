@@ -149,25 +149,25 @@ export function updateProfile({ firstName, lastName, birthday, sex, phone, addre
         headers: {authorization: localStorage.getItem('token')},  // require auth
       }
     )
-      .then((response) => {  // update profile success
-        // - update profile
+      .then((response) => {  // Update profile success
+        // - Update profile
         dispatch({
           type: UPDATE_PROFILE,
           payload: response.data.user,
         });
-        // - update username for header
+        // - Update username for header
         dispatch({
           type: AUTH_USER,
           payload: response.data.user.firstName + ' ' + response.data.user.lastName,
         });
-        // history.replace
+        // - history.replace
         historyReplace('/profile', {
           status: 'success',
           time: new Date().toLocaleString(),
           message: 'You have successfully updated your profile.',
         });
       })
-      .catch(() => { // update profile failed
+      .catch(() => { // Update profile failed
         historyReplace('/profile', {
           status: 'fail',
           time: new Date().toLocaleString(),
@@ -187,7 +187,7 @@ export function changePassword({ oldPassword, newPassword }, historyReplace) {
       headers: {authorization: localStorage.getItem('token')},  // require auth
     })
       .then((response) => {
-        dispatch(reset('settings'));  // clear the form if success
+        dispatch(reset('settings'));  // Clear the form if success
         historyReplace('/settings', {
           status: 'success',
           time: new Date().toLocaleString(),
@@ -230,14 +230,14 @@ export function createPost({ title, categories, content }, historyPush, historyR
     }, {
       headers: {authorization: localStorage.getItem('token')},  // require auth
     })
-      .then((response) => {  // if create post succeed, navigate to the post detail page
+      .then((response) => {  // If create post succeed, navigate to the post detail page
         dispatch({
           type: CREATE_POST,
           payload: response.data,
         });
         historyPush(`/posts/${response.data._id}`);
       })
-      .catch(({response}) => {  // if create post failed, alert failure message
+      .catch(({response}) => {  // If create post failed, alert failure message
         historyReplace('/posts/new', {
           time: new Date().toLocaleString(),
           message: response.data.message,
@@ -262,20 +262,32 @@ export function fetchPost(id) {
  * Blog Comments
  */
 
-export function createComment({ comment, postId }, historyReplace) {
+export function createComment({ comment, postId }, clearTextEditor, historyReplace) {
 
   return function(dispatch) {
     axios.post(`${ROOT_URL}/comments/${postId}`, { content: comment }, {
       headers: {authorization: localStorage.getItem('token')},  // require auth
     })
-      .then((response) => {  // if success, clear the text editor
+      .then((response) => {  // If success, clear the text editor
         dispatch({
           type: CREATE_COMMENT,
           payload: response.data,
         });
-        dispatch(reset('settings'));  // clear the form if success
+        dispatch(reset('comment_new'));  // - Clear form value (data)
+        clearTextEditor();  // - Clear text editor (UI)
+        historyReplace(`/posts/${postId}`, null);  // - clear alert message
       })
-      .catch(({response}) => {  // if fail, render alert message
+      .catch(({response}) => {  // If fail, render alert message
+
+        // failure reason: un-authenticated
+        if (!response.data.message) {
+          return historyReplace(`/posts/${postId}`, {
+            time: new Date().toLocaleString(),
+            message: 'You must sign in before you can post new comment.',
+          });
+        }
+
+        // failure reason: comment is empty
         historyReplace(`/posts/${postId}`, {
           time: new Date().toLocaleString(),
           message: response.data.message,
