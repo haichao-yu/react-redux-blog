@@ -10,6 +10,7 @@ import {
   UPDATE_PROFILE,
 
   FETCH_POSTS,
+  CREATE_POST,
 } from './types';
 
 const ROOT_URL = '/api';
@@ -212,5 +213,31 @@ export function fetchPosts() {
         payload: response.data,
       });
     });
+  }
+}
+
+export function createPost({ title, categories, content }, historyPush, historyReplace) {
+
+  return function(dispatch) {
+    axios.post(`${ROOT_URL}/posts`, {
+      title,
+      categories,
+      content,
+    }, {
+      headers: {authorization: localStorage.getItem('token')},  // require auth
+    })
+      .then((response) => {  // if create post succeed, navigate to the post detail page
+        dispatch({
+          type: CREATE_POST,
+          payload: response.data,
+        });
+        historyPush(`/posts/${response.data._id}`);
+      })
+      .catch(({response}) => {  // if create post failed, alert failure message
+        historyReplace('/posts/new', {
+          time: new Date().toLocaleString(),
+          message: response.data.message,
+        });
+      });
   }
 }

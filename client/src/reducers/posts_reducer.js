@@ -12,7 +12,7 @@ export default function(state = {}, action) {
     case FETCH_POSTS:
       return _.mapKeys(action.payload, '_id');
     case CREATE_POST:
-      return state;
+      return { ...state, [action.payload._id]: action.payload };  // [] here is not for creating array, is for key interpolation, i.e. newState[action.payload.id] = action.payload
     case FETCH_POST:
       return state;
     case UPDATE_POST:

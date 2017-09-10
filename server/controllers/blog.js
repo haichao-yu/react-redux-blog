@@ -1,3 +1,5 @@
+let _ = require('lodash');
+
 const Post = require('../models/post');
 const Comment = require('../models/comment');
 
@@ -60,7 +62,7 @@ exports.createPost = function(req, res, next) {
   // Create a new post
   const post = new Post({
     title: title,
-    categories: categories.split(',').map((item) => item.trim()),
+    categories: _.uniq(categories.split(',').map((item) => item.trim())),  // remove leading and trailing spaces, remove duplicate categories
     content: content,
     authorId: authorId,
     authorName: authorName,
