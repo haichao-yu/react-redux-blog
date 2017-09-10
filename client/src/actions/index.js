@@ -98,6 +98,7 @@ export function verifyJwt() {
 }
 
 export function fetchMessage() {
+
   return function(dispatch) {
     axios.get(ROOT_URL, {
       headers: { authorization: localStorage.getItem('token') }
@@ -247,6 +248,7 @@ export function createPost({ title, categories, content }, historyPush, historyR
 }
 
 export function fetchPost(id) {
+
   return function(dispatch) {
     axios.get(`${ROOT_URL}/posts/${id}`).then(response => {
       // console.log(response);
@@ -255,6 +257,25 @@ export function fetchPost(id) {
         payload: response.data,
       });
     });
+  }
+}
+
+// export function updatePost()
+
+// export function deletePost()
+
+export function fetchPostsByUserId() {
+
+  return function(dispatch) {
+    axios.get(`${ROOT_URL}/my_posts`, {
+      headers: {authorization: localStorage.getItem('token')},  // require auth
+    })
+      .then((response) => {
+        dispatch({
+          type: FETCH_POSTS,
+          payload: response.data,
+        });
+      });
   }
 }
 
@@ -297,6 +318,7 @@ export function createComment({ comment, postId }, clearTextEditor, historyRepla
 }
 
 export function fetchComments(postId) {
+
   return function(dispatch) {
     axios.get(`${ROOT_URL}/comments/${postId}`).then((response) => {
       dispatch({

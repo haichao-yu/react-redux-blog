@@ -18,6 +18,7 @@ import Settings from './components/userinfo/settings';
 import PostList from './components/blog/post_list';
 import PostNew from './components/blog/post_new';
 import PostDetail from './components/blog/post_detail/index';
+import PostMine from './components/blog/post_mine';
 
 import reducers from './reducers';
 import { AUTH_USER } from './actions/types';
@@ -47,7 +48,8 @@ ReactDOM.render(
             <Route path='/feature' component={RequireAuth(Feature)} />
             <Route exact path='/posts' component={PostList} />
             <Route path='/posts/new' component={RequireAuth(PostNew)} />
-            <Route path="/posts/:id" component={PostDetail}/>
+            <Route path='/posts/:id' component={PostDetail} />
+            <Route path='/my_posts' component={RequireAuth(PostMine)} />
             <Route component={NoMatch} />
           </Switch>
         </div>
