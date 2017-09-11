@@ -12,7 +12,6 @@ import Welcome from './components/welcome';
 import Signin from './components/auth/signin';
 import Signup from './components/auth/signup';
 import RequireAuth from './components/auth/require_auth';
-import Feature from './components/feature';  // todo: delete this page
 import Profile from './components/userinfo/profile';
 import Settings from './components/userinfo/settings';
 import PostList from './components/blog/post_list';
@@ -45,7 +44,6 @@ ReactDOM.render(
             <Route path='/signup' component={Signup} />
             <Route path="/profile" component={RequireAuth(Profile)} />
             <Route path="/settings" component={RequireAuth(Settings)} />
-            <Route path='/feature' component={RequireAuth(Feature)} />
             <Route exact path='/posts' component={PostList} />
             <Route path='/posts/new' component={RequireAuth(PostNew)} />
             <Route path='/posts/:id' component={PostDetail} />
