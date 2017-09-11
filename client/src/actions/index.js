@@ -3,7 +3,6 @@ import { reset } from 'redux-form';
 import {
   AUTH_USER,
   UNAUTH_USER,
-  FETCH_MESSAGE,
 
   FETCH_PROFILE,
   CLEAR_PROFILE,
@@ -96,21 +95,6 @@ export function verifyJwt() {
       dispatch({
         type: AUTH_USER,
         payload: response.data.username,
-      });
-    });
-  }
-}
-
-export function fetchMessage() {
-
-  return function(dispatch) {
-    axios.get(ROOT_URL, {
-      headers: { authorization: localStorage.getItem('token') }
-    }).then(response => {
-      // console.log(response);
-      dispatch({
-        type: FETCH_MESSAGE,
-        payload: response.data.message,
       });
     });
   }
