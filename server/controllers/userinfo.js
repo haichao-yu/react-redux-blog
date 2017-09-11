@@ -1,4 +1,6 @@
 const User = require('../models/user');
+const Post = require('../models/post');
+const Comment = require('../models/comment');
 
 /**
  * Fetch profile information
@@ -51,6 +53,20 @@ exports.updateProfile = function(req, res, next) {
 
   // Get user
   const user = req.user;
+
+  // Update author name for post (updateMany(): MongoDB will update all documents that match criteria)
+  Post.updateMany({ authorId: user._id }, { $set: { authorName: firstName + ' ' + lastName }}, function(err) {
+    if (err) {
+      next(err);
+    }
+  });
+
+  // Update author name for comment (updateMany(): MongoDB will update all documents that match criteria)
+  Comment.updateMany({ authorId: user._id }, { $set: { authorName: firstName + ' ' + lastName }}, function(err) {
+    if (err) {
+      next(err);
+    }
+  });
 
   // Update user profile
   User.findByIdAndUpdate(user._id, { $set: {
