@@ -12,6 +12,8 @@ import {
   FETCH_POSTS,
   CREATE_POST,
   FETCH_POST,
+  // UPDATE_POST,
+  DELETE_POST,
 
   CHECK_AUTHORITY,
 
@@ -264,7 +266,20 @@ export function fetchPost(id) {
 
 // export function updatePost()
 
-// export function deletePost()
+export function deletePost(id, historyPush) {
+
+  return function(dispatch) {
+    axios.delete(`${ROOT_URL}/posts/${id}`, {
+      headers: {authorization: localStorage.getItem('token')},  // require auth
+    }).then((response) => {
+      dispatch({
+        type: DELETE_POST,
+        payload: id,
+      });
+      historyPush('/posts');
+    })
+  }
+}
 
 export function fetchPostsByUserId() {
 
@@ -344,6 +359,11 @@ export function checkAuthority(postId) {
         type: CHECK_AUTHORITY,
         payload: response.data.allowChange,
       });
+    }).catch(() => {  // If an user is un-authorized, he/she cannot make change to any posts
+      dispatch({
+        type: CHECK_AUTHORITY,
+        payload: false,
+      })
     });
   }
 }

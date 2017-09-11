@@ -18,7 +18,7 @@ export default function(state = {}, action) {
     case UPDATE_POST:
       return state;
     case DELETE_POST:
-      return state;
+      return _.omit(state, action.payload);
     default:
       return state;
   }
