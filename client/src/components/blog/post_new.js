@@ -57,10 +57,9 @@ class PostNew extends Component {
     const { handleSubmit } = this.props;
 
     return (
-      <div>
+      <div className="post">
         {this.renderAlert()}
-        <h3>New Post</h3>
-        <hr />
+        <h2 className="mb-5">New Post</h2>
         <form onSubmit={handleSubmit(this.handleFormSubmit.bind(this))}>
           <Field name="title" component={this.renderInput} type="text" label="Title:" placeholder="Enter your title" required={true} />
           <Field name="categories" component={this.renderInput} type="text" label="Categories:" placeholder="Enter your categories, use ',' to separate them" required={true} />

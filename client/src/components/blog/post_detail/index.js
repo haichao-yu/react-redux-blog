@@ -25,7 +25,7 @@ class PostDetail extends Component {
     }
 
     return (
-      <div  className="post-detail">
+      <div  className="post">
         <PostBody post={this.props.post} />
         <Comments postId={this.props.match.params.id} />
         <CommentNew

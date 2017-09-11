@@ -36,7 +36,7 @@ class PostMine extends Component {
 
   render() {
     return (
-      <div>
+      <div className="post">
         <h2 className="mb-5">My Blog Posts</h2>
         {_.map(this.props.posts, post => {
           return this.renderPostSummary(post);
