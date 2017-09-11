@@ -5,6 +5,7 @@ import NoMatch from '../../nomatch';
 import PostBody from './post_body';
 import Comments from './comments';
 import CommentNew from './comment_new';
+import PostEdit from './post_edit';
 
 import { fetchPost, checkAuthority, deletePost } from '../../../actions';
 
@@ -12,10 +13,17 @@ class PostDetail extends Component {
 
   constructor(props) {
     super(props);
-    // component state: being read or being edited
+    this.state = {  // component state: being read or being edited
+      beingEdit: false
+    };
   }
 
   componentDidMount() {
+
+    // By default, we set beingEdit as false (Since when the user first click the post, the post detail is read, rather than edited)
+    this.setState({
+      beingEdit: false
+    });
 
     // Get post id
     const { id } = this.props.match.params;
@@ -29,8 +37,16 @@ class PostDetail extends Component {
     this.props.checkAuthority(id);
   }
 
-  onEditClick() {
+  handleEditSuccess() {
+    this.setState({
+      beingEdit: false
+    });
+  }
 
+  onEditClick() {
+    this.setState({
+      beingEdit: true
+    });
   }
 
   onDeleteClick() {
@@ -68,7 +84,7 @@ class PostDetail extends Component {
     if (this.props.allowChange) {
       return (
         <div>
-          <button className="btn btn-primary mr-1">Edit</button>
+          <button className="btn btn-primary mr-1" onClick={this.onEditClick.bind(this)}>Edit</button>
           <button className="btn btn-danger" data-toggle="modal" data-target="#deleteConfirmModal">Delete</button>
         </div>
       );
@@ -82,6 +98,20 @@ class PostDetail extends Component {
       return <NoMatch />;
     }
 
+    // If the component state 'beingEdit' is true, we render the post edit page
+    if (this.state.beingEdit) {
+      return (
+        <PostEdit
+          post={this.props.post}
+          onEditSuccess={this.handleEditSuccess.bind(this)}
+          history={this.props.history}
+          state={this.props.history.location.state}
+          action={this.props.history.action}
+        />
+      );
+    }
+
+    // Render the regular post detail page for reading
     return (
       <div  className="post">
         <PostBody post={this.props.post} />

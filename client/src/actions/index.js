@@ -12,7 +12,7 @@ import {
   FETCH_POSTS,
   CREATE_POST,
   FETCH_POST,
-  // UPDATE_POST,
+  UPDATE_POST,
   DELETE_POST,
 
   CHECK_AUTHORITY,
@@ -264,7 +264,33 @@ export function fetchPost(id) {
   }
 }
 
-// export function updatePost()
+export function updatePost({ _id, title, categories, content }, onEditSuccess, historyReplace) {
+
+  return function(dispatch) {
+    axios.put(`${ROOT_URL}/posts/${_id}`, {
+      _id,
+      title,
+      categories,
+      content,
+    }, {
+      headers: {authorization: localStorage.getItem('token')},  // require auth
+    })
+      .then((response) => {
+        dispatch({
+          type: UPDATE_POST,
+          payload: response.data,
+        });
+        onEditSuccess();  // set beingEdit to false
+        historyReplace(`/posts/${_id}`, null);
+      })
+      .catch(({response}) => {
+        historyReplace(`/posts/${_id}`, {
+          time: new Date().toLocaleString(),
+          message: response.data.message,
+        });
+      });
+  }
+}
 
 export function deletePost(id, historyPush) {
 

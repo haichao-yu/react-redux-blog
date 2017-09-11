@@ -199,7 +199,7 @@ exports.updatePost = function(req, res, next) {
 
     // Update user
     post.title = title;
-    post.categories = categories;
+    post.categories = _.uniq(categories.split(',').map((item) => item.trim())),  // remove leading and trailing spaces, remove duplicate categories;
     post.content = content;
 
     // Save user

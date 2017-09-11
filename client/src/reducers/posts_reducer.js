@@ -16,7 +16,7 @@ export default function(state = {}, action) {
     case FETCH_POST:
       return { ...state, [action.payload._id]: action.payload };
     case UPDATE_POST:
-      return state;
+      return { ...state, [action.payload._id]: action.payload };
     case DELETE_POST:
       return _.omit(state, action.payload);
     default:
