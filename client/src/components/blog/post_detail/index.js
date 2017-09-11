@@ -6,14 +6,37 @@ import PostBody from './post_body';
 import Comments from './comments';
 import CommentNew from './comment_new';
 
-import { fetchPost } from '../../../actions';
+import { fetchPost, checkAuthority } from '../../../actions';
 
 class PostDetail extends Component {
 
+  constructor(props) {
+    super(props);
+    // component state: being read or being edited
+  }
+
   componentDidMount() {
+
+    // Get post id
+    const { id } = this.props.match.params;
+
+    // Fetch post detail
     if (!this.props.post) {
-      const { id } = this.props.match.params;
       this.props.fetchPost(id);
+    }
+
+    // Check whether current authenticated user has authority to make change to this post
+    this.props.checkAuthority(id);
+  }
+
+  renderUpdateAndDeleteButton() {
+    if (this.props.allowChange) {
+      return (
+        <div>
+          <button className="btn btn-primary mr-1">Edit</button>
+          <button className="btn btn-danger">Delete</button>
+        </div>
+      );
     }
   }
 
@@ -27,6 +50,7 @@ class PostDetail extends Component {
     return (
       <div  className="post">
         <PostBody post={this.props.post} />
+        {this.renderUpdateAndDeleteButton()}
         <Comments postId={this.props.match.params.id} />
         <CommentNew
           postId={this.props.match.params.id}
@@ -39,8 +63,11 @@ class PostDetail extends Component {
   }
 }
 
-function mapStateToProps({ posts }, ownProps) {
-  return { post: posts[ownProps.match.params.id] };
+function mapStateToProps({ posts, auth }, ownProps) {
+  return {
+    post: posts[ownProps.match.params.id],
+    allowChange: auth.allowChange,
+  };
 }
 
-export default connect(mapStateToProps, { fetchPost })(PostDetail);
+export default connect(mapStateToProps, { fetchPost, checkAuthority })(PostDetail);

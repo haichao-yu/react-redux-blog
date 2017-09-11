@@ -13,6 +13,8 @@ import {
   CREATE_POST,
   FETCH_POST,
 
+  CHECK_AUTHORITY,
+
   CREATE_COMMENT,
   FETCH_COMMENTS,
 } from './types';
@@ -324,6 +326,23 @@ export function fetchComments(postId) {
       dispatch({
         type: FETCH_COMMENTS,
         payload: response.data,
+      });
+    });
+  }
+}
+
+/**
+ * Check authority: Check if the user has the authority to make change to a specific post
+ */
+export function checkAuthority(postId) {
+
+  return function(dispatch) {
+    axios.get(`${ROOT_URL}/allow_edit_or_delete/${postId}`, {
+      headers: {authorization: localStorage.getItem('token')},  // require auth
+    }).then((response) => {
+      dispatch({
+        type: CHECK_AUTHORITY,
+        payload: response.data.allowChange,
       });
     });
   }

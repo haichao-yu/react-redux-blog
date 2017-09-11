@@ -12,5 +12,7 @@ export const FETCH_POST = 'fetch_post';
 export const UPDATE_POST = 'update_post';
 export const DELETE_POST = 'delete_post';
 
+export const CHECK_AUTHORITY = 'check_authority';  // check if the user has the authority to make change to a specific post
+
 export const CREATE_COMMENT = 'create_comment';
 export const FETCH_COMMENTS = 'fetch_comments';
