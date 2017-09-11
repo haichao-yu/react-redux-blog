@@ -105,6 +105,48 @@ exports.fetchPost = function(req, res, next) {
 };
 
 /**
+ * Check if current post can be updated or deleted by the authenticated user: The author can only make change to his/her own posts
+ *
+ * @param req
+ * @param res
+ * @param next
+ */
+exports.allowUpdateOrDelete = function(req, res, next) {
+
+  // Require auth
+  const user = req.user;
+
+  // Find the post by post ID
+  Post.findById({
+    _id: req.params.id
+  }, function(err, post) {
+
+    if (err) {
+      console.log(err);
+      return res.status(422).json({
+        message: 'Error! Could not retrieve the post with the given post ID.'
+      });
+    }
+
+    // Check if the post exist
+    if (!post) {
+      return res.status(404).json({
+        message: 'Error! The post with the given ID is not exist.'
+      });
+    }
+
+    console.log(user._id);
+    console.log(post.authorId);
+
+    // Check if the user ID is equal to the author ID
+    if (!user._id.equals(post.authorId)) {
+      return res.send({allowChange: false});
+    }
+    res.send({allowChange: true});
+  });
+};
+
+/**
  * Edit/Update a post
  *
  * @param req
@@ -128,6 +170,7 @@ exports.updatePost = function(req, res, next) {
       });
     }
 
+    // Check if the post exist
     if (!post) {
       return res.status(404).json({
         message: 'Error! The post with the given ID is not exist.'

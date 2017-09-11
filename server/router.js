@@ -47,6 +47,8 @@ module.exports = function(app) {
 
   app.get('/api/posts/:id', Blog.fetchPost);
 
+  app.get('/api/allow_edit_or_delete/:id', requireAuth, Blog.allowUpdateOrDelete);
+
   app.put('/api/posts/:id', requireAuth, Blog.updatePost);
 
   app.delete('/api/posts/:id', requireAuth, Blog.deletePost);
