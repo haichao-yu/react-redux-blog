@@ -56,7 +56,7 @@ class Header extends Component {
                 <Link className="nav-link" to="/posts">Posts</Link>
               </li>
               <li className="nav-item">
-                <a className="nav-link" target="_blank" href="https://github.com/haichao-yu/react-redux-blog">GitHub</a>
+                <a className="nav-link" target="_blank" rel="noopener noreferrer" href="https://github.com/haichao-yu/react-redux-blog">GitHub</a>
               </li>
             </ul>
             <form className="form-inline my-2 my-md-0">
