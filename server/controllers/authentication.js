@@ -101,6 +101,13 @@ exports.signin = function(req, res, next) {
 };
 */
 
+/**
+ * Verify if the JWT in local storage is valid
+ *
+ * @param req
+ * @param res
+ * @param next
+ */
 exports.verifyJwt = function(req, res, next) {
 
   // Require auth
