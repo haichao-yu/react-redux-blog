@@ -2,6 +2,8 @@
 
 This is a MERN stack based fully functioning blog system, which supports features of signing up, signing up, making authenticated requests, updating profile, changing password, publishing/editing/deleting blog post, making comments, etc.
 
+Live App: https://www.haichaoy.com/
+
 ## Tech Stack
 
 #### Front-end
