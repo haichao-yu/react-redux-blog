@@ -26,7 +26,7 @@ Live App: https://www.haichaoy.com/
 
 ## Usage
 
-Running locally you need 3 terminals open: one for clint, one for server, and another one for MongoDB back-end. Below are the steps:
+Running locally you need 3 terminals open: one for client, one for server, and another one for MongoDB back-end. Below are the steps:
 
 1. Install Node.js;
 2. Install MongoDB;
