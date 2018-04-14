@@ -38,3 +38,7 @@ Running locally you need 3 terminals open: one for client, one for server, and a
 8. In `client` directory, run `npm run start`;
 
 Then you are all set. You can go to `http://localhost:3000/` to check you live application.
+
+## Proxy
+
+Please refer to [this link](https://github.com/facebook/create-react-app/blob/master/packages/react-scripts/template/README.md#proxying-api-requests-in-development).
