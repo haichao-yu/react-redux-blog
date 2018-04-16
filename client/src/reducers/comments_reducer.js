@@ -5,6 +5,8 @@ import {
 } from '../actions/types';
 
 export default function(state = {}, action) {
+  // Attention!!! The state object here refers to state.comments, instead of the application state.
+
   switch(action.type) {
     case FETCH_COMMENTS:
       return _.mapKeys(action.payload, '_id');
